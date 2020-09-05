@@ -1,0 +1,15 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 3.5vw;
+
+  background: #d6dfff url('/assets/pattern.png') center;
+  background-size: 180vw;
+}
+
+p {
+  font-size: 1.3em
+}
