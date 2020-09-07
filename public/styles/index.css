@@ -1,15 +1,40 @@
+:root {
+  font-family: monospace;
+  font-size: 1.35em;
+}
+
 body {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  font-size: 3.5vw;
-
   background: #d6dfff url('/assets/pattern.png') center;
   background-size: 100vw;
 }
 
 p {
-  font-size: 1.3em
+  margin: 0;
+  padding: 0.1em;
+}
+
+#terminal {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  flex: 1;
+  align-self: stretch;
+  background-color: #fff7;
+  border-radius: 10px 10px 0 0;
+  border: 5px solid lightgray;
+  padding: 0.5em;
+  margin: 40px;
+}
+
+#terminal-line {
+  /* flex: 1; */
+  font-family: monospace;
+  font-size: inherit;
+  background-color: #0000;
+  outline: 1px solid lightgray;
+  border: none;
+  padding: 0.1em;
 }
