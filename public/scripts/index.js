@@ -1,4 +1,5 @@
-const cmdLine = document.getElementById('terminal-line');
+const terminalLine = document.getElementById('terminal-line');
+const inputLine = document.getElementById('input-line');
 const terminal = document.getElementById('terminal');
 
 const socket = io(window.location.origin);
@@ -17,16 +18,16 @@ let cmdsIndex = {
   }
 };
 
-cmdLine.select();
+terminalLine.select();
 
-cmdLine.addEventListener('keydown', ({ key }) => {
+terminalLine.addEventListener('keydown', ({ key }) => {
   if (key !== 'Enter') return;
 
-  const text = cmdLine.value;
-  cmdLine.value = null;
+  const text = terminalLine.value;
+  terminalLine.value = null;
 
   if (!!text.replace(/\s/g, '').length) {
-    print(text);
+    print(text, false);
     cmdsCache.unshift(text);
   }
 
@@ -34,12 +35,27 @@ cmdLine.addEventListener('keydown', ({ key }) => {
 });
 
 function parseCommand(cmd) {
-  const [ action, ...parameters ] = cmd.replace('/', '').split(/ /g);
+  // const [ action, ...tempParameters ] = cmd.replace('/', '').split(/ /g);
 
-  switch (action) {
+  let join = false;
+  let joinStr = '';
+  const [ action, ...parameters ] = cmd.split(' ').reduce((strArr, chunk) => {
+  	if (!chunk.includes('"') && !join) { return [...strArr, chunk] }
+  	if (/^"/.test(chunk)) { join = true; }
+  	if (join) { joinStr += chunk + ' '; }
+  	if (/"$/.test(chunk)) {
+  		join = false;
+  		const temp = joinStr;
+  		joinStr = '';
+  		return [...strArr, temp.slice(0, -1)];
+  	}
+  	return strArr;
+  }, []);
+
+  switch (action.slice(1)) {
     case 'log':
       const time = Date.now();
-      socket.emit('log', parameters[0]);
+      socket.emit('log', parameters[0].replace(/"/g, ''));
       socket.once('log', (timeOut) => {
         print(`A log has been sent to the server. Time: ${timeOut - time}ms`);
       });
@@ -47,12 +63,13 @@ function parseCommand(cmd) {
   }
 }
 
-function print(text) {
+function print(text, output = true) {
   const line = document.createElement('p');
-  const lineText = document.createTextNode(text);
-  line.append(lineText);
+  const outputSign = document.createElement('span');
+  outputSign.append(document.createTextNode(output ? '> ' : '< '));
+  line.append(outputSign, document.createTextNode(text));
 
-  terminal.insertBefore(line, cmdLine);
+  terminal.insertBefore(line, inputLine);
 }
 
 function constrain(num, limit1, limit2) {
