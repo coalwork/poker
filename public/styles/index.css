@@ -15,6 +15,9 @@ body {
 .input::before {
   content: '<\00A0';
 }
+.output::before {
+  content: '>\00A0';
+}
 
 #terminal {
   display: flex;
@@ -26,7 +29,6 @@ body {
   border: 5px solid lightgray;
   padding: 0 0.5em;
   margin: 40px;
-  overflow: auto;
   box-sizing: border-box;
 }
 
@@ -42,6 +44,11 @@ body {
 #terminal p {
   margin: 0;
   padding: 0.2em 0;
+  white-space: pre;
+}
+
+#terminal-window {
+  overflow: auto;
 }
 
 #input-line {
