@@ -70,7 +70,7 @@ class HTMLTerminal {
         Array.from(this.output.children).forEach((child) => child.remove());
         break;
       case 'register':
-        this.writeText(command, 'input');
+        this.writeText(`${action} ${parameters[0]} ${new Array(parameters[1].length).fill('-').join('')}`, 'input');
         this.writeText('Sending a register request to the server...', 'output');
         socket.emit('register', {
           username: parameters[0],
@@ -79,6 +79,10 @@ class HTMLTerminal {
         socket.once('register', (message) => {
           this.writeText(message, 'output');
         });
+        break;
+      default:
+        this.writeText(command, 'input');
+        this.writeText(`'${action.slice(1)}' is not a valid command.`, 'output');
     }
   }
 }

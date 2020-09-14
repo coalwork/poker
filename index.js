@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
@@ -38,7 +39,10 @@ io.on('connect', (socket) => {
 
     if (!validation.valid) { return socket.emit('register', validation.reason); }
 
-    const user = new User(userData);
+    const user = new User({
+      username: userData.username,
+      password: await bcrypt.hash(userData.password, 10)
+    });
 
     if ((await User.find({})).map(({ username }) => username).includes(userData.username)) {
       return socket.emit('register', `User ${userData.username} has already been registered.`);

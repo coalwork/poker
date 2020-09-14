@@ -20,4 +20,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     terminal.input.value = null;
   });
+
+  terminal.input.addEventListener('input', (event) => {
+    if (/^\/register \b\w+?\b /.test(event.target.value)) {
+      return event.target.setAttribute('type', 'password');
+    }
+    event.target.setAttribute('type', 'text');
+  })
 });
