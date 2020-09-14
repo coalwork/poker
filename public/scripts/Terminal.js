@@ -52,9 +52,10 @@ class HTMLTerminal {
     switch (action.slice(1)) {
       case 'help':
         this.writeText([
-          '/help: Display this help message.',
-          '/clear: Clears the terminal.',
-          '/log <message>: Logs a message to the server.'
+          '/clear                          | Clears the terminal.',
+          '/help                           | Display this help message.',
+          '/log <message>                  | Logs a message to the server.',
+          '/register <username> <password> | Registers a user to the server.'
         ], 'output');
         break;
       case 'log':
@@ -68,6 +69,16 @@ class HTMLTerminal {
       case 'clear':
         Array.from(this.output.children).forEach((child) => child.remove());
         break;
+      case 'register':
+        this.writeText(command, 'input');
+        this.writeText('Sending a register request to the server...', 'output');
+        socket.emit('register', {
+          username: parameters[0],
+          password: parameters[1]
+        });
+        socket.once('register', (message) => {
+          this.writeText(message, 'output');
+        });
     }
   }
 }
