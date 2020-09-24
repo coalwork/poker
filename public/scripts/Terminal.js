@@ -54,6 +54,7 @@ class HTMLTerminal {
         this.writeText([
           '/clear                          | Clears the terminal.',
           '/help                           | Display this help message.',
+          '/users                          | Displays registered users.',
           '/log <message>                  | Logs a message to the server.',
           '/register <username> <password> | Registers a user to the server.'
         ], 'output');
@@ -78,6 +79,13 @@ class HTMLTerminal {
         });
         socket.once('register', (message) => {
           this.writeText(message, 'output');
+        });
+        break;
+      case 'users':
+        this.writeText(command, 'input');
+        socket.emit('users');
+        socket.once('users', (users) => {
+          this.writeText(JSON.stringify(users, null).replace(/[[\]]/g, '').split(','), 'output');
         });
         break;
       default:
