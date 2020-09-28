@@ -15,7 +15,20 @@
   <div id="terminal">
     <div id="terminal-window"></div>
     <div id="input-line">
-      <input id="terminal-line" placeholder="Type /help for a list of commands">
+      <input
+        id="terminal-line"
+        placeholder="Type /help for a list of commands"
+        data-placeholder="Type /help for a list of commands"
+      >
     </div>
   </div>
+  <template id="prompt">
+    <p class="output"
+      ><input
+        class="prompt"
+        maxlength="120"
+        size="40"
+        placeholder="Type here, press enter to finish"
+    ></p>
+  </template>
 </body>

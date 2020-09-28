@@ -19,6 +19,18 @@ body {
   content: '>\00A0';
 }
 
+.prompt {
+  display: inline-block;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+.prompt:disabled {
+  color: #454545;
+}
+
 #terminal {
   display: flex;
   flex-direction: column;
@@ -30,6 +42,7 @@ body {
   padding: 0 0.5em;
   margin: 40px;
   box-sizing: border-box;
+  max-width: 100vw;
 }
 
 #terminal > *:first-child {

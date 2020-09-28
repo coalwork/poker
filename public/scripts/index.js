@@ -1,7 +1,8 @@
 const socket = io(window.location.origin);
 
-window.addEventListener('DOMContentLoaded', () => {
-  const terminal = new HTMLTerminal(
+let terminal;
+window.addEventListener('DOMContentLoaded', async () => {
+  terminal = new HTMLTerminal(
     document.getElementById('terminal-line'),
     document.getElementById('terminal-window')
   );
@@ -26,5 +27,5 @@ window.addEventListener('DOMContentLoaded', () => {
       return event.target.setAttribute('type', 'password');
     }
     event.target.setAttribute('type', 'text');
-  })
+  });
 });

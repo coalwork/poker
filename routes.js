@@ -20,8 +20,6 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.use(express.json());
-
 router.use(({ path }, res, next) => {
   if (/\.?template\.html/.test(path)) {
     return res.status(404).end();
@@ -51,7 +49,8 @@ router.use((req, res, next) => {
 
 router.get('/', (_, res) => res.redirect('/index.html'));
 
-router.post('/login', (req, res, next) => {
+router.post('/login', express.urlencoded({ extended: false }), (req, res, next) => {
+  console.log(req.body);
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
@@ -61,9 +60,8 @@ router.post('/login', (req, res, next) => {
 
     req.logIn(user, (err) => {
       if (err) { return res.status(500).end(); }
-      res.status(201).end();
+      res.status(201).redirect('/');
     });
-
   })(req, res, next);
 });
 
