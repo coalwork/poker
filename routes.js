@@ -20,6 +20,7 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
+// Checks if the template file exists, otherwise return status 404
 router.use(({ path }, res, next) => {
   if (/\.?template\.html/.test(path)) {
     return res.status(404).end();
@@ -27,7 +28,9 @@ router.use(({ path }, res, next) => {
   next();
 });
 
+// Parses the template file
 router.use((req, res, next) => {
+  // I have no idea why I used Promise.resolve().then() here, maybe I'm just dumb
   return Promise.resolve().then(() => {
     const filename = (req.path.match(/\/(.*)\.html/) || [])[1];
     const htmlName = filename + '.template.html';
@@ -50,7 +53,6 @@ router.use((req, res, next) => {
 router.get('/', (_, res) => res.redirect('/index.html'));
 
 router.post('/login', express.urlencoded({ extended: false }), (req, res, next) => {
-  console.log(req.body);
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
